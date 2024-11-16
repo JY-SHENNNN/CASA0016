@@ -1,0 +1,34 @@
+#define button 8 
+#define LED 9
+
+int lastButtonState = LOW;  // store the previous button state
+int currentButtonState;      // store the current previous state
+
+void setup() {
+  pinMode(button, INPUT_PULLUP); 
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  ButtonPressed();
+
+}
+
+
+void ButtonPressed(){
+  currentButtonState = digitalRead(button);
+  digitalWrite(LED, LOW);
+  // once the button state from low to high, the button pressed
+  if (lastButtonState == LOW && currentButtonState == HIGH) {
+    Serial.println("Button Pressed!");  // detect button pressed
+    digitalWrite(LED, HIGH);
+    delay(100);
+  } else{
+    Serial.println("Button released!");
+    delay(100);
+  }
+
+  // assign the currernt value as previous value
+  lastButtonState = currentButtonState;
+}
