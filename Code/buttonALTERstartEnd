@@ -14,6 +14,9 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN);
 int blueSamp = 0;
 int redSamp = 0;
 int greenSamp = 0;
+int blueTest = 0;
+int redTest = 0;
+int greenTest = 0;
 bool buttonPressed = false;
 int ledState = LOW; // 初始状态LED关闭
 int lastButtonState = LOW;  // store the previous button state
@@ -45,28 +48,28 @@ void loop() {
 
   ButtonPressed();
   // Read Blue Pulse Width
-  if(digitalRead(LED) == HIGH){
-    Serial.print("start");
-  //   blueSamp = getBluePW();
-  //   delay(200); 
-  //   redSamp = getRedPW();
-  //   delay(200);
-  //   greenSamp = getGreenPW();
-  //   delay(200);
-  //   for(int i=0; i<4; i++) {
-  //   pixels.setPixelColor(i, 150, 0, 0);
-  //   pixels.show();
-  //   // Serial.print("red:");
-  //   // Serial.print(redSamp);
-  //   // Serial.print(" - green:");
-  //   // Serial.print(greenSamp);
-  //   // Serial.print(" - blue:");
-  //   // Serial.println(blueSamp);
-    
-  //   delay(500);
-  //   }
-  }else{
+  if(digitalRead(LED) == LOW){
     Serial.println("end");
+    pixels.clear();       // 清除所有灯光设置
+    pixels.show();  
+  }else{
+    Serial.print("start");
+    blueSamp = getBluePW();
+    redSamp = getRedPW();
+    greenSamp = getGreenPW();
+    for(int i=0; i<4; i++) {
+    pixels.setPixelColor(i, 150, 0, 0);
+    pixels.show();
+    delay(50);
+    }
+    blueTest = getBluePW();
+    redTest = getRedPW();
+    greenTest = getGreenPW();
+    for(int i=4; i<NUMPIXELS; i++) {
+    pixels.setPixelColor(i, 150, 0, 0);
+    pixels.show();
+    delay(50);
+    }
   }
 }
 
@@ -85,10 +88,10 @@ if (lastButtonState == LOW && currentButtonState == HIGH) {
     // 切换 LED 状态
     if (!buttonPressed) {
       ledState = HIGH;  // 第一次按下，LED 常亮
-      buttonPressed = true;  // 设置为已按下，防止重复触发
+      buttonPressed = HIGH;  // 设置为已按下，防止重复触发
     } else {
       ledState = LOW;  // 第二次按下，LED 长灭
-      buttonPressed = false;  // 重置为未按下状态，准备下一次切换
+      buttonPressed = LOW;  // 重置为未按下状态，准备下一次切换
     }
 
     digitalWrite(LED, buttonPressed); // 更新 LED 状态
