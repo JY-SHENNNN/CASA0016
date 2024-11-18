@@ -31,20 +31,22 @@ void setup() {
     digitalWrite(s0, HIGH);
     digitalWrite(s1, HIGH); 
 
-    digitalWrite(LED, HIGH); 
+    digitalWrite(LED, LOW); 
     attachInterrupt(digitalPinToInterrupt(buttonPin), handleButtonPress, FALLING);
 
     Serial.begin(9600);
 }
 
 void loop() { 
+    
     if (buttonPressed) {       
         buttonPressed = false; 
         int redPW = getRedPW();
         int greenPW = getGreenPW();
         int bluePW = getBluePW();
-
-        if (pressCount == 1) { // first pressed
+        if (pressCount == 1){
+          digitalWrite(LED, HIGH);
+        } else if (pressCount == 2) { // first pressed
             rgbFirst[0] = redPW;
             rgbFirst[1] = greenPW;
             rgbFirst[2] = bluePW;
@@ -60,7 +62,7 @@ void loop() {
               pixels.show();
             }
             delay(200);
-        } else if (pressCount == 2) { // second pressed
+        } else if (pressCount == 3) { // second pressed
             rgbSecond[0] = redPW;
             rgbSecond[1] = greenPW;
             rgbSecond[2] = bluePW;
@@ -78,6 +80,7 @@ void loop() {
             delay(2000);
             pixels.clear();      
             pixels.show(); 
+            digitalWrite(LED, LOW);
             calculateDeltaE(); // calculate the color difference
             // reset the pressed counter
             pressCount = 0;
