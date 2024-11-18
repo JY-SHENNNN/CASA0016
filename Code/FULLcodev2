@@ -1,0 +1,148 @@
+#include <Adafruit_NeoPixel.h>
+#define PIN 7
+#define NUMPIXELS 8
+
+const int buttonPin = 2; // buttin pin
+int s0 = 3, s1 = 4, s2 = 5, s3 = 6;
+int LED = 9;
+int sensorOut = 8; 
+volatile bool buttonPressed = false; // button pressed flag
+unsigned long lastInterruptTime = 0;
+
+int rgbFirst[3] = {0, 0, 0};  // first pressed RGB value
+int rgbSecond[3] = {0, 0, 0}; // second pressed RGB value
+int pressCount = 0;           // count button pressed time
+
+Adafruit_NeoPixel pixels(NUMPIXELS, PIN);
+
+void setup() {
+    pixels.setBrightness(10);
+    pinMode(buttonPin, INPUT_PULLUP); 
+    pinMode(s0, OUTPUT);
+    pinMode(s1, OUTPUT);
+    pinMode(s2, OUTPUT);
+    pinMode(s3, OUTPUT);
+    pinMode(sensorOut, INPUT); 
+
+    pixels.begin();
+    pixels.clear();      
+    pixels.show();        
+
+    digitalWrite(s0, HIGH);
+    digitalWrite(s1, HIGH); 
+
+    digitalWrite(LED, HIGH); 
+    attachInterrupt(digitalPinToInterrupt(buttonPin), handleButtonPress, FALLING);
+
+    Serial.begin(9600);
+}
+
+void loop() { 
+    if (buttonPressed) {       
+        buttonPressed = false; 
+        int redPW = getRedPW();
+        int greenPW = getGreenPW();
+        int bluePW = getBluePW();
+
+        if (pressCount == 1) { // first pressed
+            rgbFirst[0] = redPW;
+            rgbFirst[1] = greenPW;
+            rgbFirst[2] = bluePW;
+            Serial.println("First RGB values stored:");
+            Serial.print("Red: ");
+            Serial.print(rgbFirst[0]);
+            Serial.print(" Green: ");
+            Serial.print(rgbFirst[1]);
+            Serial.print(" Blue: ");
+            Serial.println(rgbFirst[2]);
+            for (int i = 0; i <= 3; i++) {
+              pixels.setPixelColor(i, 255, 255, 0);
+              pixels.show();
+            }
+            delay(200);
+        } else if (pressCount == 2) { // second pressed
+            rgbSecond[0] = redPW;
+            rgbSecond[1] = greenPW;
+            rgbSecond[2] = bluePW;
+            Serial.println("Second RGB values stored:");
+            Serial.print("Red: ");
+            Serial.print(rgbSecond[0]);
+            Serial.print(" Green: ");
+            Serial.print(rgbSecond[1]);
+            Serial.print(" Blue: ");
+            Serial.println(rgbSecond[2]);
+            for (int i = 4; i <= 8; i++) {
+              pixels.setPixelColor(i, 255, 255, 0);
+              pixels.show();
+            }
+            delay(2000);
+            pixels.clear();      
+            pixels.show(); 
+            calculateDeltaE(); // calculate the color difference
+            // reset the pressed counter
+            pressCount = 0;
+        }
+    }
+
+    delay(1000); 
+}
+
+void calculateDeltaE() {
+  // 使用简单公式计算 Delta E
+  float deltaE = sqrt(pow(rgbSecond[0] - rgbFirst[0], 2) +
+                      pow(rgbSecond[1] - rgbFirst[1], 2) +
+                      pow(rgbSecond[2] - rgbFirst[2], 2));
+
+  Serial.print("Delta E: ");
+  Serial.println(deltaE);
+
+  // 通过显示不同颜色来指示 Delta E
+  if (deltaE < 10) {
+    for (int i = 0; i <= 8; i++) {
+      pixels.setPixelColor(i, 0, 0, 255);
+      pixels.show();
+    }
+  } else{
+    for (int i = 0; i <= 8; i++) {
+      pixels.setPixelColor(i, 255, 0, 0);
+      pixels.show();
+    }
+  }
+  pixels.show();
+  delay(1000);
+  pixels.clear();
+  pixels.show();
+}
+
+void handleButtonPress() {
+  unsigned long currentTime = millis();
+  if (currentTime - lastInterruptTime > 200) {
+      buttonPressed = true;
+      lastInterruptTime = currentTime;
+      pressCount++; // update the press time
+  }
+}
+
+// get red pulse width
+int getRedPW() {
+  digitalWrite(s2, LOW); // allow red to pass
+  digitalWrite(s3, LOW);
+  int PW = pulseIn(sensorOut, LOW);   // get the pulse width by us
+  return PW;
+}
+
+// get green pulse width
+int getGreenPW() {
+  digitalWrite(s2, HIGH); // allow green to pass
+  digitalWrite(s3, HIGH);
+  int PW = pulseIn(sensorOut, LOW);   // get the pulse width by us
+  return PW;
+}
+
+// get blue pulse width
+int getBluePW() {
+  digitalWrite(s2, LOW);  // allow blue to pass
+  digitalWrite(s3, HIGH);
+  int PW = pulseIn(sensorOut, LOW);   // get the pulse width by us
+  return PW;
+}
