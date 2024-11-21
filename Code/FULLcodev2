@@ -1,11 +1,14 @@
 #include <Adafruit_NeoPixel.h>
-#define PIN 7
+#define PIN 9
 #define NUMPIXELS 8
 
-const int buttonPin = 2; // buttin pin
-int s0 = 3, s1 = 4, s2 = 5, s3 = 6;
-int LED = 9;
-int sensorOut = 8; 
+#define buttonPin 2 // buttin pin
+#define s0 3
+#define s1 4
+#define s2 5
+#define s3 6
+#define LED 8
+#define sensorOut 7
 volatile bool buttonPressed = false; // button pressed flag
 unsigned long lastInterruptTime = 0;
 
@@ -34,7 +37,7 @@ void setup() {
     digitalWrite(LED, LOW); 
     attachInterrupt(digitalPinToInterrupt(buttonPin), handleButtonPress, FALLING);
 
-    Serial.begin(9600);
+    Serial.begin(9600);  
 }
 
 void loop() { 
@@ -91,7 +94,7 @@ void loop() {
 }
 
 void calculateDeltaE() {
-  // 使用简单公式计算 Delta E
+  // calculate the color difference in math way
   float deltaE = sqrt(pow(rgbSecond[0] - rgbFirst[0], 2) +
                       pow(rgbSecond[1] - rgbFirst[1], 2) +
                       pow(rgbSecond[2] - rgbFirst[2], 2));
@@ -99,7 +102,7 @@ void calculateDeltaE() {
   Serial.print("Delta E: ");
   Serial.println(deltaE);
 
-  // 通过显示不同颜色来指示 Delta E
+  // Show different color to represent the difference range
   if (deltaE < 10) {
     for (int i = 0; i <= 8; i++) {
       pixels.setPixelColor(i, 0, 0, 255);
