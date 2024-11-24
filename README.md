@@ -26,3 +26,6 @@ Once the difference is in certain range (e.g. smaller than 10), it means the tes
 4. encapsulate the whole circuit with enclosure
 5. test again to ensure everything okay
 
+# Reference
+[1] https://dfimg.dfrobot.com/enshop/image/data/SEN0101/TCS3200%20TCS3210.pdf
+[2] https://wiki.dfrobot.com/TCS3200_Color_Sensor__SKU_SEN0101_
