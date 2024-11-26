@@ -2,7 +2,7 @@
 
 This is used for CASA0016 Making, Designing & Building Connected Sensor Systems coursework.
 
-## Introduction
+# Introduction
 Aims to produce the color quality checker, by using the color sensor to get the sample color and the test color. Through the calculation of RGB value difference to measure the difference between the two color. 
 Once the difference is in certain range (e.g. smaller than 10), it means the tested-color quality is good and vice versa.
 * Sample color: The expected color to print
@@ -30,4 +30,4 @@ Once the difference is in certain range (e.g. smaller than 10), it means the tes
 1. https://dfimg.dfrobot.com/enshop/image/data/SEN0101/TCS3200%20TCS3210.pdf
 2. https://wiki.dfrobot.com/TCS3200_Color_Sensor__SKU_SEN0101_
 3. https://doditsuprianto.blogspot.com/2018/09/tcs3200-color-sensor-fritzing-library.html package for fritzing TCS3200
-4. https://github.com/adafruit/Fritzing-Library/blob/master/parts/Adafruit%20NeoPXL8%20Friend.fzpz package for fritzing Neopixel8
+4. https://github.com/adafruit/Fritzing-Library/blob/master/parts/Adafruit%20NeoPixel%20Stick.fzpz package for fritzing Neopixel8
