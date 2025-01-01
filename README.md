@@ -2,7 +2,7 @@
 
 This is used for CASA0016 Making, Designing & Building Connected Sensor Systems coursework.
 <div style="display: flex; align-items: center;">
-  <img src="[img1.png](https://github.com/JY-SHENNNN/CASA0016/blob/main/src/image.png)" width="400">
+  <img src="https://raw.githubusercontent.com/JY-SHENNNN/CASA0016/refs/heads/main/src/image.png" width="400">
 </div>
 
 <div>
@@ -35,7 +35,7 @@ Once the difference is in certain range (e.g. smaller than 10), it means the tes
 # Deliveries
 
 <div style="text-align: center;">
-  <img src="[flowchart.png](https://github.com/JY-SHENNNN/CASA0016/blob/main/src/flowchart.png)" width="200" height="450" alt="Flowchart">
+  <img src="https://raw.githubusercontent.com/JY-SHENNNN/CASA0016/refs/heads/main/src/flowchart.png" width="200" height="450" alt="Flowchart">
 </div>
 
     **Overflow Process:**
@@ -46,7 +46,7 @@ Once the difference is in certain range (e.g. smaller than 10), it means the tes
     5. NeoPixel turns red or green (red indicates bad quality, green indicates good quality).  
 
 <div style="text-align: center;">
-  <img src="[circuit.png](https://github.com/JY-SHENNNN/CASA0016/blob/main/src/circuit.png)" width="400" alt="Flowchart">
+  <img src="https://raw.githubusercontent.com/JY-SHENNNN/CASA0016/refs/heads/main/src/circuit.png" width="400" alt="Flowchart">
 </div>
 
 2. draft the circuit with code
